@@ -1,18 +1,41 @@
-import { useEffect, type ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import TodoService from "../services/TodoService";
 import type { ITodo } from "../interfaces/ITodo";
+import Todo from "./Todo";
 
 
 export default function TodosDisplay(): ReactElement {
+    const [todos, setTodos] = useState<Array<ITodo> | null>(null);
+    const [outputTodo, setOutputTodo] = useState<ITodo | null>(null);
+
+
     useEffect(() => {
         const fetchTodos = async () => {
-            const todos: Array<ITodo> = await TodoService().get();
-            console.log(todos);
+            setTodos(await TodoService().get());
         };
-       fetchTodos();
+        fetchTodos();
     }, []);
+    useEffect(() => {
+        console.log(outputTodo);
+    }, [outputTodo])
 
-    return (
-        <div>A</div>
-    );
+
+
+    if (!todos) {
+        return (
+            <section>
+                <h2>Loading...</h2>
+            </section>
+        )
+    } else {
+        return (
+            <section>
+                {
+                    todos?.map((todo) => (
+                        <Todo todo={todo} setOutput={setOutputTodo} key={todo.id} />
+                    ))
+                }
+            </section>
+        );
+    }
 }
