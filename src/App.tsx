@@ -1,9 +1,13 @@
+import type { ReactElement } from 'react';
 import './App.css';
+import TodosDisplay from './components/TodosDisplay';
 
-function App() {
- return(
-  <div className='text-2xl'>Template</div>
- )
+export default function App(): ReactElement {
+    return (
+        <>
+        <main>
+            <TodosDisplay />
+        </main>
+        </>
+    );
 }
-
-export default App
