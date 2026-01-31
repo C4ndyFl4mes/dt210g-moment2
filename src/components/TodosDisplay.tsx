@@ -7,6 +7,7 @@ import Todo from "./Todo";
 export default function TodosDisplay(): ReactElement {
     const [todos, setTodos] = useState<Array<ITodo> | null>(null);
     const [outputTodo, setOutputTodo] = useState<ITodo | null>(null);
+    const [deleteTodo, setDeleteTodo] = useState<ITodo | null>(null);
 
 
     useEffect(() => {
@@ -17,7 +18,17 @@ export default function TodosDisplay(): ReactElement {
     }, []);
     useEffect(() => {
         console.log(outputTodo);
+        if (outputTodo) {
+            setTodos(prev => prev?.map(todo => todo.id === outputTodo.id ? outputTodo : todo) || null);
+            setOutputTodo(null);
+        }
     }, [outputTodo])
+    useEffect(() => {
+        console.log(deleteTodo);
+        if (deleteTodo) {
+            setTodos(prev => prev?.filter(todo => todo.id !== deleteTodo.id) || null);
+        }
+    }, [deleteTodo]);
 
 
 
@@ -32,7 +43,7 @@ export default function TodosDisplay(): ReactElement {
             <section>
                 {
                     todos?.map((todo) => (
-                        <Todo todo={todo} setOutput={setOutputTodo} key={todo.id} />
+                        <Todo todo={todo} setOutput={setOutputTodo} setDeleteTodo={setDeleteTodo} key={todo.id} />
                     ))
                 }
             </section>

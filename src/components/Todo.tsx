@@ -5,7 +5,7 @@ import editSVG from "../assets/edit-svgrepo-com.svg";
 import type { EStatus } from "../enums/EStatus";
 
 
-export default function Todo({ todo, setOutput }: { todo: ITodo, setOutput: React.Dispatch<React.SetStateAction<ITodo | null>> }): ReactElement {
+export default function Todo({ todo, setOutput, setDeleteTodo }: { todo: ITodo, setOutput: React.Dispatch<React.SetStateAction<ITodo | null>>, setDeleteTodo: React.Dispatch<React.SetStateAction<ITodo | null>> }): ReactElement {
     const statusText: Array<string> = ['Pending', 'Ongoing', 'Completed'];
     const [localTodo, setLocalTodo] = useState<ITodo>(todo);
     const [editmode, setEditMode] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export default function Todo({ todo, setOutput }: { todo: ITodo, setOutput: Reac
                     <button className="cursor-pointer" title="Edit" onClick={() => setEditMode(!editmode)}>
                         <img src={editSVG} alt="edit" width="25" height="auto" />
                     </button>
-                    <button className="cursor-pointer" title="Delete">
+                    <button className="cursor-pointer" title="Delete" onClick={() => setDeleteTodo(localTodo)}>
                         <img src={closeSVG} alt="close" width="25" height="auto" />
                     </button>
                 </div>
@@ -56,7 +56,7 @@ export default function Todo({ todo, setOutput }: { todo: ITodo, setOutput: Reac
                     <button className="cursor-pointer" title="Edit" onClick={() => setEditMode(!editmode)}>
                         <img src={editSVG} alt="edit" width="25" height="auto" />
                     </button>
-                    <button className="cursor-pointer" title="Delete">
+                    <button className="cursor-pointer" title="Delete" onClick={() => setDeleteTodo(localTodo)}>
                         <img src={closeSVG} alt="close" width="25" height="auto" />
                     </button>
                 </div>
