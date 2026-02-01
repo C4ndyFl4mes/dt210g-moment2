@@ -77,8 +77,8 @@ export default function Todo({ todo, setOutput, setDeleteTodo }: { todo: ITodo, 
                         <img src={closeSVG} alt="close" width="25" height="auto" />
                     </button>
                 </div>
-                <h2 className="font-bold text-xl">{todo.title}</h2>
-                <p>{todo.description}</p>
+                <h2 className="font-bold text-xl wrap-break-word">{todo.title}</h2>
+                <p className="wrap-break-word">{todo.description}</p>
                 <small className="absolute bottom-2 right-2">
                     <button className="cursor-pointer" onClick={nextStatus}>{statusText[localTodo.status]}</button>
                 </small>
