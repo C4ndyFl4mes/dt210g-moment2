@@ -67,7 +67,7 @@ export default function Todo({ todo, setOutput, setDeleteTodo }: { todo: ITodo, 
         );
     } else {
         return (
-            <article className="shadow w-75 aspect-video relative p-5 rounded-2xl">
+            <article className="shadow w-75 aspect-video relative p-5 rounded-2xl border border-gray-300">
                 <div className="absolute top-0 right-0 flex">
                     <button className="cursor-pointer" title="Edit" onClick={() => setEditMode(!editmode)}>
                         <img src={editSVG} alt="edit" width="25" height="auto" />
