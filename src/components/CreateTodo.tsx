@@ -21,7 +21,12 @@ export default function CreateTodo({ setNewTodo, setOverlay }: { setNewTodo: Rea
         setError(errors);
         if (Object.keys(errors).length === 0) {
             setNewTodo(localTodo);
-        } 
+            setLocalTodo({
+                title: "",
+                description: "",
+                status: 0
+            });
+        }
     }
 
     return (
@@ -38,7 +43,7 @@ export default function CreateTodo({ setNewTodo, setOverlay }: { setNewTodo: Rea
                     {error.description && <span className="border bg-red-300 p-2 rounded-md mt-3">{error.description}</span>}
                 </label>
                 <div className="flex flex-wrap gap-4">
-                    <button type="button" className="px-3 py-1 bg-sky-400 hover:brightness-95 active:brightness-90 rounded-md cursor-pointer shadow" onClick={validation}>Update</button>
+                    <button type="button" className="px-3 py-1 bg-sky-400 hover:brightness-95 active:brightness-90 rounded-md cursor-pointer shadow" onClick={validation}>Add</button>
                     <button type="button" className="px-3 py-1 bg-orange-300 hover:brightness-95 active:brightness-90 rounded-md cursor-pointer shadow" onClick={() => setOverlay(false)}>Close</button>
                 </div>
             </form>
