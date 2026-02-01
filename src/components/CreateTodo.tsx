@@ -26,6 +26,7 @@ export default function CreateTodo({ setNewTodo, setOverlay }: { setNewTodo: Rea
                 description: "",
                 status: 0
             });
+            setOverlay(false);
         }
     }
 
