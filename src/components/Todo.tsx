@@ -3,22 +3,36 @@ import type { ITodo } from "../interfaces/ITodo";
 import closeSVG from "../assets/close-sm-svgrepo-com.svg";
 import editSVG from "../assets/edit-svgrepo-com.svg";
 import type { EStatus } from "../enums/EStatus";
+import type { IError } from "../interfaces/IError";
+import { ValidationForm } from "../validation/ValidationForm";
 
 
 export default function Todo({ todo, setOutput, setDeleteTodo }: { todo: ITodo, setOutput: React.Dispatch<React.SetStateAction<ITodo | null>>, setDeleteTodo: React.Dispatch<React.SetStateAction<ITodo | null>> }): ReactElement {
     const statusText: Array<string> = ['Pending', 'Ongoing', 'Completed'];
     const [localTodo, setLocalTodo] = useState<ITodo>(todo);
+    const [error, setError] = useState<IError>({});
     const [editmode, setEditMode] = useState<boolean>(false);
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const nextStatus = () => {
         const newStatus = (localTodo.status + 1) % 3 as typeof EStatus[keyof typeof EStatus];
-        setLocalTodo({...localTodo, status: newStatus});
+        setLocalTodo({ ...localTodo, status: newStatus });
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
-            setOutput({...localTodo, status: newStatus});
-        }, 1000);
+            setOutput({ ...localTodo, status: newStatus });
+        }, 500);
+    }
+
+    const validation = async () => {
+        const errors = await ValidationForm.validate(localTodo);
+        setError(errors);
+        if (Object.keys(errors).length === 0) {
+            setOutput(localTodo);
+            setEditMode(false);
+        } else {
+            setEditMode(true);
+        }
     }
 
     if (editmode) {
@@ -36,19 +50,21 @@ export default function Todo({ todo, setOutput, setDeleteTodo }: { todo: ITodo, 
                 <form className="flex flex-col gap-y-5">
                     <label className="flex flex-col">
                         <span>Title</span>
-                        <input type="text" name="title" value={localTodo.title} onChange={(e) => setLocalTodo({...localTodo, title: e.target.value})} placeholder="Enter title..." className="shadow rounded-md p-2 border border-gray-200" />
+                        <input type="text" name="title" value={localTodo.title} onChange={(e) => setLocalTodo({ ...localTodo, title: e.target.value })} placeholder="Enter title..." className="shadow rounded-md p-2 border border-gray-200" />
+                        {error.title && <span className="border bg-red-300 p-2 rounded-md mt-3">{error.title}</span>}
                     </label>
                     <label className="flex flex-col">
                         <span>Description</span>
-                        <textarea name="description" value={localTodo.description} onChange={(e) => setLocalTodo({...localTodo, description: e.target.value})} placeholder="Enter description..." className="shadow rounded-md p-2 border-gray-200"></textarea>
+                        <textarea name="description" value={localTodo.description} onChange={(e) => setLocalTodo({ ...localTodo, description: e.target.value })} placeholder="Enter description..." className="shadow rounded-md p-2 border-gray-200"></textarea>
+                        {error.description && <span className="border bg-red-300 p-2 rounded-md mt-3">{error.description}</span>}
                     </label>
                     <div>
-                        <button type="button" className="px-3 py-1 bg-sky-400 hover:brightness-95 active:brightness-90 rounded-md cursor-pointer shadow" onClick={() => setOutput(localTodo)}>Update</button>
+                        <button type="button" className="px-3 py-1 bg-sky-400 hover:brightness-95 active:brightness-90 rounded-md cursor-pointer shadow" onClick={validation}>Update</button>
                     </div>
                 </form>
                 <small className="absolute bottom-2 right-2 text-red-400 cursor-not-allowed">{statusText[localTodo.status]}</small>
             </article>
-        )
+        );
     } else {
         return (
             <article className="shadow w-75 aspect-video relative p-5 rounded-2xl">

@@ -1,0 +1,34 @@
+import * as Yup from "yup";
+import type { IError } from "../interfaces/IError";
+import type { ITodo } from "../interfaces/ITodo";
+
+export class ValidationForm {
+
+    static schema = Yup.object({
+        title: Yup.string().required("Title is required.").min(3, "Title must be at least three letters long.").max(40, "Title cannot be longer than 40 letters."),
+        description: Yup.string().required("Description is required.").min(3, "Description must be at least three letters long.").max(150, "Description cannot be longer than 150 letters."),
+        status: Yup.number().required().integer().min(0).max(2)
+    });
+
+    static async validate(localTodo: ITodo): Promise<IError> {
+        try {
+            await this.schema.validate(localTodo, { abortEarly: false });
+
+            return {};
+        } catch (errors) {
+            const validationErrors: IError = {};
+
+            if (errors instanceof Yup.ValidationError) {
+                errors.inner.forEach(error => {
+                    const prop = error.path as keyof IError;
+
+                    validationErrors[prop] = error.message;
+                });
+
+                return validationErrors;
+            }
+
+            return {};
+        }
+    }
+}
