@@ -6,18 +6,19 @@ import type { EStatus } from "../enums/EStatus";
 import type { IError } from "../interfaces/IError";
 import { ValidationForm } from "../validation/ValidationForm";
 
-
+// Todo-komponent som hanterar visning och redigering av en enskild todo.
 export default function Todo({ todo, setOutput, setDeleteTodo }: { todo: ITodo, setOutput: React.Dispatch<React.SetStateAction<ITodo | null>>, setDeleteTodo: React.Dispatch<React.SetStateAction<ITodo | null>> }): ReactElement {
     const statusText: Array<string> = ['Pending', 'Ongoing', 'Completed'];
     const [localTodo, setLocalTodo] = useState<ITodo>(todo);
     const [error, setError] = useState<IError>({});
     const [editmode, setEditMode] = useState<boolean>(false);
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null); // Referens för debounce-timer.
 
     const nextStatus = () => {
         const newStatus = (localTodo.status + 1) % 3 as typeof EStatus[keyof typeof EStatus];
         setLocalTodo({ ...localTodo, status: newStatus });
 
+        // Debounce för att undvika snabb statusändring till API:et.
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
             setOutput({ ...localTodo, status: newStatus });

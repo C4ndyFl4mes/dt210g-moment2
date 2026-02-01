@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 import type { ITodo } from "../interfaces/ITodo";
 
-
+// Service för att hantera API-anrop relaterade till todo-poster.
 export default function TodoService() {
     const client = axios.create({
         baseURL: 'https://dt210g-net-api-todos-production.up.railway.app/api/todos'
@@ -12,6 +12,7 @@ export default function TodoService() {
         }
     }
 
+    // Hämta alla todo-poster från API:et.
     async function get(): Promise<Array<ITodo>> {
         try {
             const res: AxiosResponse<Array<ITodo>, any, {}> = await client.get<Array<ITodo>>("/", config);
@@ -27,6 +28,7 @@ export default function TodoService() {
         }
     }
 
+    // Skapa en ny todo-post via API:et.
     async function post(todo: ITodo): Promise<ITodo | null> {
         try {
             const res = await client.post<ITodo>("/", todo, config);
@@ -42,6 +44,7 @@ export default function TodoService() {
         }
     }
 
+    // Uppdatera en befintlig todo-post via API:et.
     async function put(todo: ITodo): Promise<ITodo | null> {
         try {
             if (!todo.id) {
@@ -60,6 +63,7 @@ export default function TodoService() {
         }
     }
 
+    // Radera en befintlig todo-post via API:et.
     async function del(todo: ITodo): Promise<ITodo | null> {
          try {
             if (!todo.id) {

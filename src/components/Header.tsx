@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-
+// Header-komponent som visar applikationens titel.
 export default function Header(): ReactElement {
     return (
         <header className="py-4 text-center shadow-xl mb-5">

@@ -3,7 +3,7 @@ import type { ITodo } from "../interfaces/ITodo";
 import type { IError } from "../interfaces/IError";
 import { ValidationForm } from "../validation/ValidationForm";
 
-
+// Komponent för att skapa en ny todo-post.
 export default function CreateTodo({ setNewTodo, setOverlay }: { setNewTodo: React.Dispatch<React.SetStateAction<ITodo | null>>, setOverlay: React.Dispatch<React.SetStateAction<boolean>> }): ReactElement {
     const [localTodo, setLocalTodo] = useState<ITodo>({
         title: "",

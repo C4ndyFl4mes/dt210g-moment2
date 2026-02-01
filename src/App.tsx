@@ -4,6 +4,7 @@ import TodosDisplay from './components/TodosDisplay';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+// Huvudkomponent för applikationen.
 export default function App(): ReactElement {
     return (
         <>
