@@ -5,7 +5,7 @@ import Todo from "./Todo";
 import addSVG from "../assets/add-plus-circle-svgrepo-com.svg";
 import CreateTodo from "./CreateTodo";
 
-
+// Komponent för att visa och hantera listan av todos.
 export default function TodosDisplay(): ReactElement {
     const [todos, setTodos] = useState<Array<ITodo> | null>(null);
     const [outputTodo, setOutputTodo] = useState<ITodo | null>(null);
