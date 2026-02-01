@@ -8,7 +8,7 @@ export class ValidationForm {
     // Definiera valideringsschema med Yup.
     static schema = Yup.object({
         title: Yup.string().required("Title is required.").min(3, "Title must be at least three letters long.").max(40, "Title cannot be longer than 40 letters."),
-        description: Yup.string().required("Description is required.").min(3, "Description must be at least three letters long.").max(150, "Description cannot be longer than 150 letters."),
+        description: Yup.string().notRequired().max(200, "Description cannot be longer than 200 letters."),
         status: Yup.number().required().integer().min(0).max(2)
     });
 
